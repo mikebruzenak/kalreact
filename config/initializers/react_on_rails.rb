@@ -29,7 +29,7 @@ ReactOnRails.configure do |config|
   # Below options can be overriden by passing options to the react_on_rails
   # `render_component` view helper method.
   ################################################################################
-  # default is false
+  # default is false  PRERENDER
   config.prerender = false
 
   # default is true for development, off otherwise
