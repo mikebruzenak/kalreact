@@ -1,6 +1,6 @@
 import React from 'react'
-import AppointmentForm from './appointment_form'
-import { AppointmentsList } from './appointments_list'
+import AppointmentForm from './AppointmentForm'
+import { AppointmentsList } from './AppointmentsList'
 import update from 'immutability-helper'
 import { FormErrors } from './FormErrors'
 
@@ -11,12 +11,17 @@ export default class Appointments extends React.Component{
             appointments: this.props.appointments,
             title: '',
             appt_time: '',
-            formErrors: {}
+            formErrors: {},
+            formValid: false
         }
     }
 
     handleUserInput(obj) {
-        this.setState(obj)
+        this.setState(obj, this.validateForm)
+    }
+
+    validateForm() {
+        this.setState({formValid: this.state.title.trim().length > 2})
     }
 
     handleFormSubmit() {
@@ -24,7 +29,7 @@ export default class Appointments extends React.Component{
         $.post('/appointments', {appointment: appointment})
             .done((data) => {
                 this.addNewAppointment(data)
-                this.resetFormErrors()
+                this.resetForm()
             })
             .fail((response) => {
                 console.log(response)
@@ -32,8 +37,8 @@ export default class Appointments extends React.Component{
             })
     }
 
-    resetFormErrors () {
-        this.setState({formErrors: {}})
+    resetForm () {
+        this.setState({formErrors: {}, title: '', appt_time: ''})
     }
 
     addNewAppointment(appointment) {
@@ -49,8 +54,9 @@ export default class Appointments extends React.Component{
         return (
             <div>
                 <FormErrors formErrors = {this.state.formErrors} />
-                <AppointmentForm input_title={this.state.title}
-                                 input_appt_time={this.state.appt_time}
+                <AppointmentForm title={this.state.title}
+                                 appt_time={this.state.appt_time}
+                                 formValid={this.state.formValid}
                                  onUserInput={(obj) => this.handleUserInput(obj)}
                                  onFormSubmit={() => this.handleFormSubmit()} />
                 <AppointmentsList appointments={this.state.appointments} />

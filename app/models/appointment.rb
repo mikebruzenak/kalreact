@@ -1,6 +1,7 @@
 class Appointment < ApplicationRecord
   validates_presence_of :title, :appt_time
-  validates :title, length: {minimum: 3}
+  # validates :name, presence: true
+  validates :title, length: {minimum: 3, message: 'TOO MUCH SHORT'}
   validate :appt_time_cannot_be_in_the_past
 
   private
@@ -12,3 +13,6 @@ class Appointment < ApplicationRecord
   end
 
 end
+
+
+# #new_record?

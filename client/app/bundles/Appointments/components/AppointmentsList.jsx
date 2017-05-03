@@ -1,5 +1,5 @@
 import React from 'react'
-import {Appointment} from './appointment'
+import {Appointment} from './Appointment'
 
 // can't make a const a default export
 // import { AppointmentsList } from './appointments_list'
