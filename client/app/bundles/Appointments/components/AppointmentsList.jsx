@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import {Appointment} from './Appointment'
 
 // can't make a const a default export
@@ -12,3 +12,7 @@ export const AppointmentsList = ({appointments}) =>
             )
         })}
     </div>
+
+AppointmentsList.prototypes = {
+    appointments: PropTypes.array.isRequired
+}
