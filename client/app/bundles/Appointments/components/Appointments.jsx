@@ -68,7 +68,7 @@ export default class Appointments extends React.Component{
     }
 
     resetForm () {
-        this.setState({formErrors: {}, title: '', appt_time: ''})
+        this.setState({formErrors: {}, title: {value: '', valid: false }, appt_time: {value: '', valid: false }})
     }
 
     addNewAppointment(appointment) {
