@@ -25,19 +25,27 @@ export default class Appointments extends React.Component{
 
     validateField(fieldName, fieldValue) {
         let fieldValid
+        let fieldErrors = []
         switch (fieldName) {
             case 'title':
                 fieldValid = this.state.title.value.trim().length > 2
+                if (!fieldValid) {
+                    fieldErrors=[ ' should be at least three characters long']
+                }
                 break
             case 'appt_time':
                 fieldValid = moment(this.state.appt_time.value).isValid() &&
                              moment(this.state.appt_time.value).isAfter()
+                if (!fieldValid) {
+                    fieldErrors=[ ' should not be in the past']
+                }
                 break
             default:
               break
         }
         const newFieldState = update(this.state[fieldName], {valid: {$set: fieldValid}})
-        this.setState({[fieldName]: newFieldState}, this.validateForm)
+        const newFormErrors = update( this.state.formErrors, {$merge: {[fieldName]: fieldErrors}})
+        this.setState({[fieldName]: newFieldState, formErrors: newFormErrors}, this.validateForm)
     }
 
     validateForm() {
