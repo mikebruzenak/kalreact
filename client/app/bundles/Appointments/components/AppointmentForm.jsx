@@ -5,10 +5,9 @@ import moment from 'moment'
 
 export default class AppointmentForm extends React.Component{
     handleChange = (e) => {
-        const name = e.target.name;
-        const obj = {};
-        obj[name] = e.target.value;
-        this.props.onUserInput(obj);
+        const fieldName = e.target.name
+        const fieldValue = e.target.value
+        this.props.onUserInput( fieldName, fieldValue );
     }
 
     handleSubmit = (e) => {
@@ -17,11 +16,9 @@ export default class AppointmentForm extends React.Component{
     }
 
     setApptTime = (e) => {
-        const name = 'appt_time';
-        const obj = {};
-        if (obj[name] = e.toDate()) {
-            this.props.onUserInput(obj);
-        }
+        const fieldName = 'appt_time'
+        const fieldValue = e.toDate()
+        this.props.onUserInput(fieldName, fieldValue)
     }
 
     render() {
@@ -35,13 +32,13 @@ export default class AppointmentForm extends React.Component{
                 <Label label="Enter a title, date and time" />
                 <form onSubmit={this.handleSubmit}>
                     <input name="title" placeholder="Appointment Title"
-                           value={this.props.title}
+                           value={this.props.title.value}
                            onChange={this.handleChange}/>
 
                     <Datetime input={false}
                               open={true}
                               inputProps={inputProps}
-                              value={moment(this.props.appt_time)}
+                              value={moment(this.props.appt_time.value)}
                               onChange={this.setApptTime}/>
 
                     <input type="submit" value="Make Appointment"
