@@ -12,6 +12,7 @@ export default class Appointments extends React.Component{
 
     constructor(props, _railsContext) {
         super(props)
+        console.log(props)
         this.state = {
             appointments: this.props.appointments,
             title: {value: '', valid: false },
