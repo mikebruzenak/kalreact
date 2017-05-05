@@ -24,7 +24,12 @@ export default class AppointmentForm extends React.Component{
         appt_time: [(t) => { return(validations.timeShouldBeInTheFuture(t) ) }]
     }
 
+    focus = () => {
+        this.titleInput.focus()
+    }
+
     handleChange = (e) => {
+        // const fieldName = this.titleInput.name
         const fieldName = e.target.name
         const fieldValue = e.target.value
         this.props.onUserInput( fieldName, fieldValue, AppointmentForm.formValidations[fieldName] )
@@ -52,8 +57,14 @@ export default class AppointmentForm extends React.Component{
                 <Label label="Enter a title, date and time" />
                 <form onSubmit={this.handleSubmit}>
                     <input name="title" placeholder="Appointment Title"
+                           ref={(input) => {this.titleInput = input}}
                            value={this.props.title.value}
                            onChange={this.handleChange}/>
+
+                    <input
+                        type="button"
+                        value="Focus the text input"
+                        onClick={this.focus} />
 
                     <Datetime input={false}
                               open={true}
