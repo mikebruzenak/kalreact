@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import {Appointment} from './Appointment'
+import Appointment from './Appointment'
 
 // can't make a const a default export
 // import { AppointmentsList } from './appointments_list'
