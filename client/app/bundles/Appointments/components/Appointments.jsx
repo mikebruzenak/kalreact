@@ -3,7 +3,6 @@ import AppointmentForm from './AppointmentForm'
 import { AppointmentsList } from './AppointmentsList'
 import update from 'immutability-helper'
 import { FormErrors } from './FormErrors'
-import moment from 'moment'
 
 export default class Appointments extends React.Component{
     static propTypes = {
