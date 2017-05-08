@@ -104,7 +104,7 @@ export default class AppointmentForm extends React.Component{
         const appointment = {title: this.state.title.value, appt_time: this.state.appt_time.value};
         $.ajax({
             type: 'PATCH',
-            url: '/appointments/$this.props.match.params.id',
+            url: `/appointments/${this.props.match.params.id}`,
             data: {appointment: appointment}
         })
             .done((data) => {
@@ -143,7 +143,8 @@ export default class AppointmentForm extends React.Component{
         const inputProps = {
           name: 'appt_time'
         };
-
+        console.log('RENDER OF FORM')
+        console.log(this.state.formErrors)
         return(
             <div>
                 <h2>Make async New Appointment</h2>
