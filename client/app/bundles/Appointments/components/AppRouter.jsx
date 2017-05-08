@@ -9,7 +9,7 @@ export default (props) => {
     return (
         <Router>
           <div>
-              <Route path="/" component={AppHeader} />  //will show function finally routes
+              <Route path="/" component={AppHeader} />
               <Route exact path="/" render={ routeProps => (
                 <Appointments {...routeProps} appointments={props.appointments} />
                 )} />

@@ -23,6 +23,21 @@ export default class AppointmentForm extends React.Component{
         console.log(props)
     }
 
+    componentDidMount() {
+        if (this.props.match) {
+            $.ajax({
+                type: 'GET',
+                url: `/appointments/${this.props.match.params.id}`,
+                dataType: 'JSON'
+            }).done((data) => {
+                this.setState({
+                    title: {value:data.title, validations: true},
+                    appt_time: {value:data.appt_time, valid: true}
+                })
+            })
+        }
+    }
+
     static formValidations = {
         title: [ (s) => {return (validations.checkMinLength(s, 3))} ],
         appt_time: [(t) => { return(validations.timeShouldBeInTheFuture(t) ) }]
@@ -63,16 +78,48 @@ export default class AppointmentForm extends React.Component{
 
     handleFormSubmit = (e) => {
         e.preventDefault()
+        if( this.props.match !== undefined && this.props.match.path === '/appointments/:id/edit') {
+            this.updateAppointment()
+        } else {
+            this.addAppointment()
+        }
+    }
+
+    addAppointment = () => {
         const appointment = {title: this.state.title.value, appt_time: this.state.appt_time.value};
         $.post('/appointments', {appointment: appointment})
             .done((data) => {
+            console.log('Added!')
                 this.props.handleNewAppointment(data)
                 this.resetForm()
             })
             .fail((response) => {
                 console.log(response)
-                this.setState({formErrors: response.responseJSON})
+                this.setState({formErrors: response.responseJSON,
+                    formValid: false})
             })
+    }
+
+    updateAppointment = () => {
+        const appointment = {title: this.state.title.value, appt_time: this.state.appt_time.value};
+        $.ajax({
+            type: 'PATCH',
+            url: '/appointments/$this.props.match.params.id',
+            data: {appointment: appointment}
+        })
+            .done((data) => {
+            console.log('Updated!')
+                this.resetFormErrors()
+            })
+            .fail((response) => {
+                console.log(response)
+                this.setState({formErrors: response.responseJSON,
+                    formValid: false})
+            })
+    }
+
+    resetFormErrors () {
+        this.setState({formErrors: {}})
     }
 
     resetForm () {
