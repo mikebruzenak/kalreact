@@ -18,11 +18,13 @@ export default class AppointmentForm extends React.Component{
             title: {value: '', valid: false },
             appt_time: {value: '', valid: false },
             formErrors: {},
-            formValid: false
+            formValid: false,
+            editing: false
         }
         console.log(props)
     }
 
+    //TODO set editing
     componentDidMount() {
         if (this.props.match) {
             $.ajax({
@@ -32,7 +34,8 @@ export default class AppointmentForm extends React.Component{
             }).done((data) => {
                 this.setState({
                     title: {value:data.title, validations: true},
-                    appt_time: {value:data.appt_time, valid: true}
+                    appt_time: {value:data.appt_time, valid: true},
+                    editing: false
                 })
             })
         }
@@ -147,7 +150,11 @@ export default class AppointmentForm extends React.Component{
         console.log(this.state.formErrors)
         return(
             <div>
-                <h2>Make async New Appointment</h2>
+                <h2>
+                    {this.state.editing ?
+                    "Editing" :
+                    "Make an appointment"}
+                </h2>
                 <FormErrors formErrors = {this.state.formErrors} />
                 <Label label="Enter a title, date and time" />
                 <form onSubmit={this.handleFormSubmit}>
