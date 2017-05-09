@@ -35,7 +35,7 @@ export default class AppointmentForm extends React.Component{
                 this.setState({
                     title: {value:data.title, validations: true},
                     appt_time: {value:data.appt_time, valid: true},
-                    editing: false
+                    editing: this.isEditing()
                 })
             })
         }
@@ -79,6 +79,14 @@ export default class AppointmentForm extends React.Component{
         })
     }
 
+    isEditing = () => {
+        if( this.props.match !== undefined && this.props.match.path === '/appointments/:id/edit') {
+            return(true)
+        } else {
+            return(false)
+        }
+    }
+
     handleFormSubmit = (e) => {
         e.preventDefault()
         if( this.props.match !== undefined && this.props.match.path === '/appointments/:id/edit') {
@@ -118,6 +126,21 @@ export default class AppointmentForm extends React.Component{
                 console.log(response)
                 this.setState({formErrors: response.responseJSON,
                     formValid: false})
+            })
+    }
+
+    deleteAppointment = () => {
+        $.ajax({
+            type: 'DELETE',
+            url: `/appointments/${this.props.match.params.id}`,
+        })
+            .done((data) => {
+                console.log('Appointment deleted!')
+                this.props.history.push('/')
+                this.resetFormErrors()
+            })
+            .fail((response) => {
+                console.log('deleting failed')
             })
     }
 
@@ -174,10 +197,18 @@ export default class AppointmentForm extends React.Component{
                               value={moment(this.state.appt_time.value)}
                               onChange={this.setApptTime}/>
 
-                    <input type="submit" value="Make Appointment"
+                    <input type="submit"
+                           value={this.state.editing ? "Update Appointment" : "Make Appointment"}
                            className="submit-button"
                             disabled={!this.state.formValid}/>
                 </form>
+                {this.state.editing && (
+                    <p>
+                        <button onClick={this.deleteAppointment}>
+                            Delete appointment
+                        </button>
+                    </p>
+                )}
             </div>
         )
     }
